@@ -1,547 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Spelldid for Indiefferential - Green/Black Developer Style</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
-<style>
-  /* Colors */
-  :root {
-    --bg-black: #000000;
-    --panel-bg: #111111;
-    --green-bright: #39ff14;
-    --green-dim: #0f3d0f;
-    --border-green: #22cc33;
-    --highlight-green: #22ff55;
-    --shadow-glow: #33ff3355;
-    --button-bg: #003300;
-    --button-hover-bg: #005500;
-    --button-active-bg: #007700;
-    --error-red: #ff4444;
-  }
-
-  /* Reset */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
-  html, body {
-    height: 100%;
-    background: var(--bg-black);
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    user-select: none;
-  }
-
-  /* Layout */
-  .app-wrapper {
-    max-width: 1200px;
-    margin: 40px auto 80px;
-    display: flex;
-    gap: 20px;
-    height: 700px;
-    user-select: text;
-  }
-
-  /* Left Container */
-  .container {
-    flex: 2;
-    background: var(--panel-bg);
-    border-radius: 12px;
-    padding: 30px 40px;
-    box-shadow:
-      0 0 10px var(--green-bright),
-      inset 0 0 30px var(--green-bright);
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    text-align: center;
-    color: var(--green-bright);
-    text-shadow: 0 0 8px var(--green-bright);
-    margin-bottom: 30px;
-  }
-
-  /* Textarea */
-  textarea {
-    flex-shrink: 0;
-    width: 100%;
-    height: 180px;
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 8px;
-    padding: 15px 20px;
-    font-size: 1.1rem;
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    box-shadow:
-      inset 0 0 8px var(--green-bright),
-      0 0 4px var(--green-bright);
-    outline: none;
-    resize: vertical;
-    transition: border-color 0.3s ease;
-  }
-  textarea:focus {
-    border-color: var(--highlight-green);
-    box-shadow:
-      inset 0 0 14px var(--highlight-green),
-      0 0 12px var(--highlight-green);
-  }
-
-  /* Buttons */
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    user-select: none;
-  }
-
-  button {
-    background: var(--button-bg);
-    border: 2px solid var(--border-green);
-    border-radius: 10px;
-    padding: 14px 36px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--green-bright);
-    cursor: pointer;
-    text-shadow: 0 0 6px var(--green-bright);
-    box-shadow: 0 0 10px var(--green-bright);
-    transition: all 0.25s ease;
-  }
-  button:hover {
-    background: var(--button-hover-bg);
-    border-color: var(--highlight-green);
-    box-shadow:
-      0 0 20px var(--highlight-green),
-      0 0 10px var(--highlight-green);
-    transform: scale(1.05);
-  }
-  button:active {
-    background: var(--button-active-bg);
-    box-shadow: 0 0 8px var(--highlight-green);
-    transform: scale(0.95);
-  }
-
-  /* Suggestions box */
-  .suggestions {
-    margin-top: 30px;
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 10px;
-    padding: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-    box-shadow:
-      inset 0 0 12px var(--green-bright),
-      0 0 8px var(--green-bright);
-    font-size: 0.95rem;
-    line-height: 1.4;
-    user-select: text;
-  }
-
-  /* Issue item */
-  .issue {
-    border-left: 4px solid var(--highlight-green);
-    margin-bottom: 18px;
-    padding-left: 15px;
-    color: var(--green-bright);
-    text-shadow: 0 0 4px var(--green-bright);
-  }
-
-  /* Highlight */
-  .highlight {
-    background-color: var(--highlight-green);
-    color: #000;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 700;
-  }
-
-  /* Error */
-  .error {
-    color: var(--error-red);
-    font-weight: 700;
-    text-shadow: 0 0 6px var(--error-red);
-  }
-
-  /* Right Dev Panel */
-  .dev-panel {
-    flex: 1;
-    background: var(--panel-bg);
-    border-radius: 12px;
-    padding: 30px 25px;
-    box-shadow:
-      0 0 10px var(--green-bright),
-      inset 0 0 40px var(--green-bright);
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.88rem;
-    display: flex;
-    flex-direction: column;
-    user-select: text;
-  }
-
-  .dev-panel h2 {
-    text-align: center;
-    color: var(--highlight-green);
-    font-weight: 700;
-    margin-bottom: 25px;
-    font-size: 1.5rem;
-    text-shadow: 0 0 10px var(--highlight-green);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .dev-section {
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 25px;
-    flex-grow: 1;
-    overflow-y: auto;
-    box-shadow: inset 0 0 12px var(--green-bright);
-  }
-
-  .dev-section h3 {
-    color: var(--highlight-green);
-    font-weight: 700;
-    margin-bottom: 12px;
-    text-shadow: 0 0 8px var(--highlight-green);
-    user-select: none;
-  }
-
-  .dev-line {
-    margin-bottom: 8px;
-    white-space: pre-wrap;
-    user-select: text;
-    color: var(--green-bright);
-    text-shadow: 0 0 4px var(--green-bright);
-  }
-
-  /* Scrollbar styling */
-  .dev-section::-webkit-scrollbar,
-  .suggestions::-webkit-scrollbar {
-    width: 8px;
-    background: #000;
-  }
-  .dev-section::-webkit-scrollbar-thumb,
-  .suggestions::-webkit-scrollbar-thumb {
-    background-color: var(--border-green);
-    border-radius: 6px;
-  }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .app-wrapper {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dev Grammar Checker</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 0;
+      display: flex;
       flex-direction: column;
-      height: auto;
-      margin: 30px auto 50px;
-    }
-    .dev-panel {
-      flex: none;
-      height: 320px;
-      margin-top: 30px;
+      align-items: center;
     }
     .container {
-      height: auto;
+      max-width: 900px;
+      margin: 2rem;
+      padding: 2rem;
+      background: #111;
+      border: 1px solid #0f0;
+      box-shadow: 0 0 15px #0f0;
+      border-radius: 10px;
     }
-  }
-</style>
+    textarea {
+      width: 100%;
+      height: 150px;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px;
+      font-size: 1rem;
+      box-shadow: 0 0 10px #0f0 inset;
+    }
+    button {
+      margin: 1rem 0.5rem;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      padding: 10px 20px;
+      cursor: pointer;
+      box-shadow: 0 0 8px #0f0;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #0f0;
+      color: #000;
+    }
+    .panel {
+      margin-top: 2rem;
+      padding: 1rem;
+      border: 1px solid #0f0;
+      background: #111;
+      box-shadow: 0 0 10px #0f0;
+    }
+    .dev-console {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .dev-box {
+      flex: 1;
+      min-width: 250px;
+      background: #000;
+      color: #0f0;
+      border: 1px solid #0f0;
+      height: 150px;
+      overflow-y: auto;
+      font-size: 0.9rem;
+      padding: 0.5rem;
+      box-shadow: 0 0 10px #0f0 inset;
+    }
+    .highlight {
+      color: #fff;
+      background: #0f0;
+      padding: 0 4px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-  <div class="app-wrapper" role="main">
-    <section class="container" aria-label="Grammar Checker">
-      <h1>✨ Grammar Checker with Auto-Correct</h1>
-      <textarea id="textInput" aria-label="Input text area" placeholder="Write something with grammar or tense issues..."></textarea>
-      <div class="buttons" role="group" aria-label="Action buttons">
-        <button id="checkBtn" type="button">Check Grammar</button>
-        <button id="autoBtn" type="button">Auto-Correct</button>
-      </div>
-      <div class="suggestions" id="suggestions" aria-live="polite" aria-label="Grammar suggestions"></div>
-    </section>
+  <div class="container">
+    <h2>SPELLDID for Indiefferential</h2>
+    <textarea id="textInput" placeholder="Type your text here..."></textarea><br/>
+    <button id="checkBtn">Check Grammar</button>
+    <button id="autoBtn">Auto-Correct</button>
 
-    <aside class="dev-panel" aria-label="Developer Panel">
-      <h2>Developer Console</h2>
-      <div class="dev-section" id="consoleOutput" aria-live="polite" aria-label="Console output">
-        <h3>Logs</h3>
-        <div id="logLines"></div>
-      </div>
-      <div class="dev-section" id="debugInfo" aria-live="polite" aria-label="Debug information">
-        <h3>Debug Info</h3>
-        <div id="debugLines"></div>
-      </div>
-    </aside>
+    <div id="suggestions" class="panel"></div>
+
+    <div class="dev-console">
+      <div class="dev-box" id="logLines"><strong>Console Log:</strong></div>
+      <div class="dev-box" id="debugLines"><strong>Debug Info:</strong></div>
+      <div class="dev-box" id="backendSim"><strong>Backend Simulation:</strong></div>
+    </div>
   </div>
 
-<script>
-  const textInput = document.getElementById('textInput');
-  const suggestionsEl = document.getElementById('suggestions');
-  const logLines = document.getElementById('logLines');
-  const debugLines = document.getElementById('debugLines');
-  const checkBtn = document.getElementById('checkBtn');
-  const autoBtn = document.getElementById('autoBtn');
+  <script>
+    const textInput = document.getElementById('textInput');
+    const checkBtn = document.getElementById('checkBtn');
+    const autoBtn = document.getElementById('autoBtn');
+    const suggestionsBox = document.getElementById('suggestions');
+    const logLines = document.getElementById('logLines');
+    const debugLines = document.getElementById('debugLines');
+    const backendSim = document.getElementById('backendSim');
 
-  // Expanded common mistakes dictionary with suggestions and corrections for autocorrect
-  const commonMistakes = {
-    // spelling errors
-    'teh': 'the',
-    'recieve': 'receive',
-    'definately': 'definitely',
-    'seperate': 'separate',
-    'occured': 'occurred',
-    'untill': 'until',
-    'alot': 'a lot',
-    'wich': 'which',
-    'adress': 'address',
-    'becuase': 'because',
-    'thier': 'their',
-    'freind': 'friend',
-    'wierd': 'weird',
-    'beleive': 'believe',
-    'tommorow': 'tomorrow',
-    'acheive': 'achieve',
-    'realy': 'really',
-    'truely': 'truly',
-    // common contractions
-    'dont': "don't",
-    'cant': "can't",
-    'wont': "won't",
-    'shouldnt': "shouldn't",
-    'couldnt': "couldn't",
-    'wouldnt': "wouldn't",
-    'im': "I'm",
-    'ive': "I've",
-    'id': "I'd",
-    'youre': "you're",
-    // confusion words (very basic)
-    'your': "your (possessive) or you're (you are)?",
-    // repeated word example handled separately
-  };
+    function log(msg) {
+      const div = document.createElement('div');
+      div.textContent = msg;
+      logLines.appendChild(div);
+      logLines.scrollTop = logLines.scrollHeight;
+    }
 
-  // Simple verb agreement check pairs
-  // Format: wrong phrase -> correct phrase
-  const verbAgreementMistakes = {
-    'he are': 'he is',
-    'she are': 'she is',
-    'it are': 'it is',
-    'there is are': 'there are',
-  };
+    function debug(msg) {
+      const div = document.createElement('div');
+      div.textContent = msg;
+      debugLines.appendChild(div);
+      debugLines.scrollTop = debugLines.scrollHeight;
+    }
 
-  // Helper log function for dev panel
-  function log(message) {
-    const line = document.createElement('div');
-    line.textContent = `[LOG] ${message}`;
-    logLines.appendChild(line);
-    logLines.scrollTop = logLines.scrollHeight;
-  }
+    function backend(msg) {
+      const div = document.createElement('div');
+      div.textContent = msg;
+      backendSim.appendChild(div);
+      backendSim.scrollTop = backendSim.scrollHeight;
+    }
 
-  // Debug info update
-  function debug(message) {
-    const line = document.createElement('div');
-    line.textContent = message;
-    debugLines.appendChild(line);
-    debugLines.scrollTop = debugLines.scrollHeight;
-  }
+    const grammarRules = [
+      { pattern: /\bI are\b/gi, correction: 'I am', explanation: 'Use "am" with "I"' },
+      { pattern: /\bYou is\b/gi, correction: 'You are', explanation: 'Use "are" with "You"' },
+      { pattern: /\b(He|She|It) are\b/gi, correction: (m) => `${m[1]} is`, explanation: 'Use "is" with 3rd person singular' },
+      { pattern: /\bWe is\b/gi, correction: 'We are', explanation: 'Use "are" with "We"' },
+      { pattern: /\bThey is\b/gi, correction: 'They are', explanation: 'Use "are" with "They"' },
+      { pattern: /\bI goed\b/gi, correction: 'I went', explanation: '"Went" is the past tense of "go"' },
+      { pattern: /\b(I|He|She|It) seen\b/gi, correction: (m) => `${m[1]} saw`, explanation: '"Saw" is the past tense of "see"' },
+      { pattern: /\bHe don’t\b/gi, correction: 'He doesn’t', explanation: 'Use "doesn’t" with "He/She/It"' },
+      { pattern: /\bThey doesn’t\b/gi, correction: 'They don’t', explanation: 'Use "don’t" with plural subject' },
+      { pattern: /\bdefinately\b/gi, correction: 'definitely', explanation: 'Spelling: "definitely"' },
+      { pattern: /\bseperate\b/gi, correction: 'separate', explanation: 'Spelling: "separate"' },
+    ];
 
-  // Clear logs/debug info
-  function clearLogs() {
-    logLines.innerHTML = '';
-    debugLines.innerHTML = '';
-  }
+    function checkGrammar(text) {
+      log("Checking grammar...");
+      backend("Backend: Parsing input...");
+      const issues = [];
+      grammarRules.forEach(rule => {
+        let match;
+        while ((match = rule.pattern.exec(text)) !== null) {
+          const original = match[0];
+          const correction = typeof rule.correction === 'function' ? rule.correction(match) : rule.correction;
+          issues.push({ original, correction, explanation: rule.explanation });
+          debug(`Match: "${original}" ➜ "${correction}"`);
+          backend(`Rule Applied: "${original}" corrected to "${correction}"`);
+        }
+      });
+      backend("Backend: Finished rule matching.");
+      return issues;
+    }
 
-  // Tokenize text to words, punctuation kept separate
-  function tokenize(text) {
-    // Regex splits words and punctuation but keeps contractions as one token
-    return text.match(/[\w']+|[.,!?;:"()\-]/g) || [];
-  }
-
-  // Check for repeated words
-  function findRepeatedWords(tokens) {
-    const issues = [];
-    for (let i = 1; i < tokens.length; i++) {
-      const curr = tokens[i].toLowerCase();
-      const prev = tokens[i-1].toLowerCase();
-      if (curr === prev && /^[a-z']+$/.test(curr)) {
-        issues.push({
-          type: 'Repeated word',
-          word: curr,
-          index: i,
-          suggestion: `Remove one occurrence of "${curr}".`
-        });
+    function renderSuggestions(issues) {
+      suggestionsBox.innerHTML = '';
+      if (issues.length === 0) {
+        suggestionsBox.textContent = '✅ No grammar issues found.';
+        return;
       }
-    }
-    return issues;
-  }
-
-  // Check for common mistakes and gather suggestions
-  function findCommonMistakes(tokens) {
-    const issues = [];
-    tokens.forEach((token, idx) => {
-      const lower = token.toLowerCase();
-      if (commonMistakes.hasOwnProperty(lower)) {
-        issues.push({
-          type: 'Common mistake',
-          word: token,
-          index: idx,
-          suggestion: `Consider replacing "${token}" with "${commonMistakes[lower]}".`
-        });
-      }
-    });
-    return issues;
-  }
-
-  // Check for verb agreement mistakes
-  function findVerbAgreementMistakes(text) {
-    const issues = [];
-    for (const [wrongPhrase, correctPhrase] of Object.entries(verbAgreementMistakes)) {
-      const regex = new RegExp(`\\b${wrongPhrase}\\b`, 'gi');
-      let match;
-      while ((match = regex.exec(text)) !== null) {
-        issues.push({
-          type: 'Verb agreement',
-          phrase: match[0],
-          index: match.index,
-          suggestion: `Use "${correctPhrase}" instead of "${match[0]}".`
-        });
-      }
-    }
-    return issues;
-  }
-
-  // Check for simple tense issues (basic example)
-  // This could be greatly improved with NLP libraries or APIs but keeping simple here
-  // We'll detect "was" with plural subject and "were" with singular subject - very naive
-  // For brevity, this example will skip advanced tense checks.
-
-  // Aggregate all checks
-  function checkGrammar(text) {
-    clearLogs();
-    log('Starting grammar check...');
-    const tokens = tokenize(text);
-    debug(`Tokenized words: ${tokens.length}`);
-
-    const repeatedWords = findRepeatedWords(tokens);
-    log(`Found repeated words: ${repeatedWords.length}`);
-
-    const commonMistakesFound = findCommonMistakes(tokens);
-    log(`Found common mistakes: ${commonMistakesFound.length}`);
-
-    const verbErrors = findVerbAgreementMistakes(text);
-    log(`Found verb agreement issues: ${verbErrors.length}`);
-
-    const allIssues = [...repeatedWords, ...commonMistakesFound, ...verbErrors];
-
-    if (allIssues.length === 0) {
-      return [{ message: 'No issues detected. Your text looks good! 😊', type: 'success' }];
+      issues.forEach((issue, i) => {
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>Issue ${i + 1}:</strong> "<span class="highlight">${issue.original}</span>" → "<span class="highlight">${issue.correction}</span>"<br/><em>${issue.explanation}</em>`;
+        suggestionsBox.appendChild(div);
+      });
     }
 
-    // Sort issues by index for presentation
-    allIssues.sort((a,b) => a.index - b.index);
-
-    return allIssues;
-  }
-
-  // Render suggestions list
-  function renderSuggestions(issues) {
-    if (issues.length === 1 && issues[0].type === 'success') {
-      suggestionsEl.innerHTML = `<div class="issue">${issues[0].message}</div>`;
-      return;
-    }
-    let html = '';
-    issues.forEach((issue, i) => {
-      if(issue.type === 'success') return;
-      let title = `<strong class="highlight">${issue.type}</strong>`;
-      if(issue.word) {
-        title += `: <em>${issue.word}</em>`;
-      } else if(issue.phrase) {
-        title += `: <em>${issue.phrase}</em>`;
-      }
-      html += `<div class="issue" tabindex="0" aria-label="${issue.type} issue">${title}<br>Suggestion: ${issue.suggestion}</div>`;
-    });
-    suggestionsEl.innerHTML = html;
-  }
-
-  // Auto correct text based on commonMistakes dictionary
-  function autoCorrectText(text) {
-    clearLogs();
-    log('Starting auto-correct...');
-    let correctedText = text;
-
-    // Replace common mistakes - simple word boundaries to avoid partial matches
-    for (const [wrong, right] of Object.entries(commonMistakes)) {
-      const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
-      if(regex.test(correctedText)) {
-        log(`Auto-correcting "${wrong}" to "${right}"`);
-        correctedText = correctedText.replace(regex, (match) => {
-          // Preserve case for first letter
-          if (match[0] === match[0].toUpperCase()) {
-            return right.charAt(0).toUpperCase() + right.slice(1);
-          }
-          return right;
-        });
-      }
+    function autoCorrect(text) {
+      log("Auto-correcting...");
+      backend("Backend: Running auto-correction...");
+      grammarRules.forEach(rule => {
+        if (typeof rule.correction === 'function') {
+          text = text.replace(rule.pattern, (...args) => rule.correction(args));
+        } else {
+          text = text.replace(rule.pattern, rule.correction);
+        }
+      });
+      backend("Backend: Auto-correction complete.");
+      return text;
     }
 
-    // Remove repeated words
-    const tokens = tokenize(correctedText);
-    let filteredTokens = [];
-    for (let i = 0; i < tokens.length; i++) {
-      if (i > 0 && tokens[i].toLowerCase() === tokens[i-1].toLowerCase() && /^[a-z']+$/.test(tokens[i].toLowerCase())) {
-        log(`Removing repeated word "${tokens[i]}"`);
-        continue;
-      }
-      filteredTokens.push(tokens[i]);
-    }
-    correctedText = filteredTokens.join(' ');
+    checkBtn.onclick = () => {
+      logLines.innerHTML = '';
+      debugLines.innerHTML = '';
+      backendSim.innerHTML = '';
+      const inputText = textInput.value;
+      const issues = checkGrammar(inputText);
+      renderSuggestions(issues);
+    };
 
-    // Fix simple verb agreement mistakes
-    for (const [wrongPhrase, correctPhrase] of Object.entries(verbAgreementMistakes)) {
-      const regex = new RegExp(`\\b${wrongPhrase}\\b`, 'gi');
-      if(regex.test(correctedText)) {
-        log(`Fixing verb agreement: "${wrongPhrase}" to "${correctPhrase}"`);
-        correctedText = correctedText.replace(regex, correctPhrase);
-      }
-    }
-
-    return correctedText;
-  }
-
-  // Button handlers
-  checkBtn.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    if(!text) {
-      suggestionsEl.innerHTML = '<div class="issue error">Please enter some text to check.</div>';
-      return;
-    }
-    const issues = checkGrammar(text);
-    renderSuggestions(issues);
-  });
-
-  autoBtn.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    if(!text) {
-      suggestionsEl.innerHTML = '<div class="issue error">Please enter some text to auto-correct.</div>';
-      return;
-    }
-    const corrected = autoCorrectText(text);
-    textInput.value = corrected;
-    const issues = checkGrammar(corrected);
-    renderSuggestions(issues);
-  });
-
-  // Accessibility: Focus textarea on load
-  window.addEventListener('load', () => {
-    textInput.focus();
-  });
-</script>
+    autoBtn.onclick = () => {
+      logLines.innerHTML = '';
+      debugLines.innerHTML = '';
+      backendSim.innerHTML = '';
+      let text = textInput.value;
+      text = autoCorrect(text);
+      textInput.value = text;
+      const issues = checkGrammar(text);
+      renderSuggestions(issues);
+    };
+  </script>
 </body>
 </html>
