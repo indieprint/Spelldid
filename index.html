@@ -3,294 +3,93 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Grammar Checker - Green/Black Developer Style</title>
-<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+<title>Grammar Checker</title>
 <style>
-  /* Colors */
-  :root {
-    --bg-black: #000000;
-    --panel-bg: #111111;
-    --green-bright: #39ff14;
-    --green-dim: #0f3d0f;
-    --border-green: #22cc33;
-    --highlight-green: #22ff55;
-    --shadow-glow: #33ff3355;
-    --button-bg: #003300;
-    --button-hover-bg: #005500;
-    --button-active-bg: #007700;
-    --error-red: #ff4444;
+  body {
+    background-color: #000;
+    color: #00ff00;
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0; padding: 1em;
   }
-
-  /* Reset */
-  * {
-    margin: 0; padding: 0; box-sizing: border-box;
-  }
-
-  html, body {
-    height: 100%;
-    background: var(--bg-black);
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    user-select: none;
-  }
-
-  /* Layout */
-  .app-wrapper {
-    max-width: 1200px;
-    margin: 40px auto 80px;
-    display: flex;
-    gap: 20px;
-    height: 700px;
-    user-select: text;
-  }
-
-  /* Left Container */
-  .container {
-    flex: 2;
-    background: var(--panel-bg);
-    border-radius: 12px;
-    padding: 30px 40px;
-    box-shadow:
-      0 0 10px var(--green-bright),
-      inset 0 0 30px var(--green-bright);
-    display: flex;
-    flex-direction: column;
-  }
-
-  h1 {
-    font-size: 2.8rem;
-    font-weight: 700;
-    text-align: center;
-    color: var(--green-bright);
-    text-shadow: 0 0 8px var(--green-bright);
-    margin-bottom: 30px;
-  }
-
-  /* Textarea */
   textarea {
-    flex-shrink: 0;
     width: 100%;
-    height: 180px;
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 8px;
-    padding: 15px 20px;
-    font-size: 1.1rem;
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    box-shadow:
-      inset 0 0 8px var(--green-bright),
-      0 0 4px var(--green-bright);
-    outline: none;
-    resize: vertical;
-    transition: border-color 0.3s ease;
+    height: 150px;
+    background: #000;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    font-family: inherit;
+    font-size: 1.2em;
+    padding: 0.5em;
+    box-sizing: border-box;
+    outline-offset: 4px;
+    outline-color: #00ff00;
   }
   textarea:focus {
-    border-color: var(--highlight-green);
-    box-shadow:
-      inset 0 0 14px var(--highlight-green),
-      0 0 12px var(--highlight-green);
+    outline-style: solid;
+    outline-width: 2px;
   }
-
-  /* Buttons */
-  .buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-    user-select: none;
-  }
-
   button {
-    background: var(--button-bg);
-    border: 2px solid var(--border-green);
-    border-radius: 10px;
-    padding: 14px 36px;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1rem;
-    font-weight: 700;
-    color: var(--green-bright);
-    cursor: pointer;
-    text-shadow: 0 0 6px var(--green-bright);
-    box-shadow: 0 0 10px var(--green-bright);
-    transition: all 0.25s ease;
-  }
-  button:hover {
-    background: var(--button-hover-bg);
-    border-color: var(--highlight-green);
-    box-shadow:
-      0 0 20px var(--highlight-green),
-      0 0 10px var(--highlight-green);
-    transform: scale(1.05);
-  }
-  button:active {
-    background: var(--button-active-bg);
-    box-shadow: 0 0 8px var(--highlight-green);
-    transform: scale(0.95);
-  }
-
-  /* Suggestions box */
-  .suggestions {
-    margin-top: 30px;
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 10px;
-    padding: 20px;
-    flex-grow: 1;
-    overflow-y: auto;
-    box-shadow:
-      inset 0 0 12px var(--green-bright),
-      0 0 8px var(--green-bright);
-    font-size: 0.95rem;
-    line-height: 1.4;
-    user-select: text;
-  }
-
-  /* Issue item */
-  .issue {
-    border-left: 4px solid var(--highlight-green);
-    margin-bottom: 18px;
-    padding-left: 15px;
-    color: var(--green-bright);
-    text-shadow: 0 0 4px var(--green-bright);
-  }
-
-  /* Highlight */
-  .highlight {
-    background-color: var(--highlight-green);
-    color: #000;
-    padding: 2px 6px;
-    border-radius: 4px;
-    font-weight: 700;
-  }
-
-  /* Error */
-  .error {
-    color: var(--error-red);
-    font-weight: 700;
-    text-shadow: 0 0 6px var(--error-red);
-  }
-
-  /* Right Dev Panel */
-  .dev-panel {
-    flex: 1;
-    background: var(--panel-bg);
-    border-radius: 12px;
-    padding: 30px 25px;
-    box-shadow:
-      0 0 10px var(--green-bright),
-      inset 0 0 40px var(--green-bright);
-    color: var(--green-bright);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.88rem;
-    display: flex;
-    flex-direction: column;
-    user-select: text;
-  }
-
-  .dev-panel h2 {
-    text-align: center;
-    color: var(--highlight-green);
-    font-weight: 700;
-    margin-bottom: 25px;
-    font-size: 1.5rem;
-    text-shadow: 0 0 10px var(--highlight-green);
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-
-  .dev-section {
-    background: var(--bg-black);
-    border: 2px solid var(--border-green);
-    border-radius: 8px;
-    padding: 15px 20px;
-    margin-bottom: 25px;
-    flex-grow: 1;
-    overflow-y: auto;
-    box-shadow: inset 0 0 12px var(--green-bright);
-  }
-
-  .dev-section h3 {
-    color: var(--highlight-green);
-    font-weight: 700;
-    margin-bottom: 12px;
-    text-shadow: 0 0 8px var(--highlight-green);
-    user-select: none;
-  }
-
-  .dev-line {
-    margin-bottom: 8px;
-    white-space: pre-wrap;
-    user-select: text;
-    color: var(--green-bright);
-    text-shadow: 0 0 4px var(--green-bright);
-  }
-
-  /* Scrollbar styling */
-  .dev-section::-webkit-scrollbar,
-  .suggestions::-webkit-scrollbar {
-    width: 8px;
     background: #000;
+    border: 1px solid #00ff00;
+    color: #00ff00;
+    font-family: inherit;
+    font-size: 1em;
+    padding: 0.5em 1em;
+    margin: 0.5em 0.5em 1em 0;
+    cursor: pointer;
+    transition: background 0.3s ease;
   }
-  .dev-section::-webkit-scrollbar-thumb,
-  .suggestions::-webkit-scrollbar-thumb {
-    background-color: var(--border-green);
-    border-radius: 6px;
+  button:hover, button:focus {
+    background: #002200;
+    outline: none;
   }
-
-  /* Responsive */
-  @media (max-width: 900px) {
-    .app-wrapper {
-      flex-direction: column;
-      height: auto;
-      margin: 30px auto 50px;
-    }
-    .dev-panel {
-      flex: none;
-      height: 320px;
-      margin-top: 30px;
-    }
-    .container {
-      height: auto;
-    }
+  .issue {
+    border: 1px solid #00ff00;
+    padding: 0.5em;
+    margin-bottom: 0.5em;
+    border-radius: 3px;
+  }
+  .issue strong.highlight {
+    color: #0f0;
+  }
+  .error {
+    color: #f00;
+  }
+  #log, #debug {
+    background: #001100;
+    color: #0f0;
+    font-size: 0.9em;
+    height: 150px;
+    overflow-y: auto;
+    padding: 0.5em;
+    border: 1px solid #00ff00;
+    margin-top: 1em;
+    white-space: pre-wrap;
   }
 </style>
 </head>
 <body>
-  <div class="app-wrapper" role="main">
-    <section class="container" aria-label="Grammar Checker">
-      <h1>✨ Grammar Checker with Auto-Correct</h1>
-      <textarea id="textInput" aria-label="Input text area" placeholder="Write something with grammar or tense issues..."></textarea>
-      <div class="buttons" role="group" aria-label="Action buttons">
-        <button id="checkBtn" type="button">Check Grammar</button>
-        <button id="autoBtn" type="button">Auto-Correct</button>
-      </div>
-      <div class="suggestions" id="suggestions" aria-live="polite" aria-label="Grammar suggestions"></div>
-    </section>
+<h1>Grammar Checker</h1>
+<textarea id="textInput" aria-label="Input text to check grammar"></textarea><br />
+<button id="checkBtn" aria-label="Check grammar">Check Grammar</button>
+<button id="autoBtn" aria-label="Auto-correct grammar">Auto-Correct</button>
 
-    <aside class="dev-panel" aria-label="Developer Panel">
-      <h2>Developer Console</h2>
-      <div class="dev-section" id="consoleOutput" aria-live="polite" aria-label="Console output">
-        <h3>Logs</h3>
-        <div id="logLines"></div>
-      </div>
-      <div class="dev-section" id="debugInfo" aria-live="polite" aria-label="Debug information">
-        <h3>Debug Info</h3>
-        <div id="debugLines"></div>
-      </div>
-    </aside>
-  </div>
+<div id="suggestions" aria-live="polite" aria-atomic="true"></div>
+
+<h2>Developer Log</h2>
+<div id="log"></div>
+<h2>Debug Info</h2>
+<div id="debug"></div>
 
 <script>
   const textInput = document.getElementById('textInput');
-  const suggestionsEl = document.getElementById('suggestions');
-  const logLines = document.getElementById('logLines');
-  const debugLines = document.getElementById('debugLines');
   const checkBtn = document.getElementById('checkBtn');
   const autoBtn = document.getElementById('autoBtn');
+  const suggestionsEl = document.getElementById('suggestions');
+  const logLines = document.getElementById('log');
+  const debugLines = document.getElementById('debug');
 
-  // Expanded common mistakes dictionary with suggestions and corrections for autocorrect
+  // Common simple mistakes dictionary for auto-correct
   const commonMistakes = {
     // spelling errors
     'teh': 'the',
@@ -322,19 +121,127 @@
     'ive': "I've",
     'id': "I'd",
     'youre': "you're",
-    // confusion words (very basic)
+    // confusion words
     'your': "your (possessive) or you're (you are)?",
-    // repeated word example handled separately
+    // Add more as needed
   };
 
-  // Simple verb agreement check pairs
-  // Format: wrong phrase -> correct phrase
+  // Simple verb agreement check pairs (existing)
+  // Note: We'll extend this below
   const verbAgreementMistakes = {
     'he are': 'he is',
     'she are': 'she is',
     'it are': 'it is',
     'there is are': 'there are',
   };
+
+  // Additional pronouns and correct present/past forms (for new rules)
+  const pronounVerbAgreement = {
+    // Present tense singular
+    'i': { 'be': 'am', 'have': 'have' },
+    'you': { 'be': 'are', 'have': 'have' },
+    'he': { 'be': 'is', 'have': 'has' },
+    'she': { 'be': 'is', 'have': 'has' },
+    'it': { 'be': 'is', 'have': 'has' },
+
+    // Plural pronouns - 'be' and 'have' are 'are' and 'have'
+    'we': { 'be': 'are', 'have': 'have' },
+    'they': { 'be': 'are', 'have': 'have' },
+  };
+
+  // Helper to check if a word is a pronoun we handle
+  function isPronoun(word) {
+    return Object.keys(pronounVerbAgreement).includes(word.toLowerCase());
+  }
+
+  // Helper to check verb correctness for simple present tense 'to be' and 'to have'
+  // Returns {correctForm, isCorrect} or null if not applicable
+  function checkPronounVerbAgreement(pronoun, verb) {
+    pronoun = pronoun.toLowerCase();
+    verb = verb.toLowerCase();
+    if (!isPronoun(pronoun)) return null;
+    // For 'to be' forms like am/is/are
+    if (['am', 'is', 'are', 'be'].includes(verb)) {
+      const correctForm = pronounVerbAgreement[pronoun]['be'];
+      return {correctForm, isCorrect: (verb === correctForm)};
+    }
+    // For 'to have' forms like have/has
+    if (['have', 'has'].includes(verb)) {
+      const correctForm = pronounVerbAgreement[pronoun]['have'];
+      return {correctForm, isCorrect: (verb === correctForm)};
+    }
+    return null;
+  }
+
+  // Basic present tense verb singular/plural check for -s endings
+  // He walks (correct), They walk (correct), He walk (wrong)
+  // Return correction suggestion or null if correct
+  function checkSimpleVerbAgreement(subject, verb) {
+    subject = subject.toLowerCase();
+    verb = verb.toLowerCase();
+
+    // Pronouns that require singular verb with -s in present tense
+    const singularSubjects = ['he', 'she', 'it'];
+
+    // Pronouns that require plural verb (no -s)
+    const pluralSubjects = ['i', 'you', 'we', 'they'];
+
+    // We'll only check for simple verbs that end or don't end with 's'
+    // Skip auxiliary verbs or irregular verbs (basic approach)
+    // Check if verb ends with 's' or not
+    const verbEndsWithS = verb.endsWith('s');
+
+    if (singularSubjects.includes(subject)) {
+      // Singular subject requires verb with 's'
+      if (!verbEndsWithS) {
+        // Likely should have 's'
+        // Exception: 'be', 'have' handled earlier
+        if (['be', 'have', 'am', 'is', 'are', 'has'].includes(verb)) return null;
+        return verb + 's';
+      }
+    } else if (pluralSubjects.includes(subject)) {
+      // Plural subject requires verb without 's'
+      if (verbEndsWithS) {
+        // Remove trailing s (naive)
+        // Exception: verbs ending with 'ss' etc. ignored for simplicity
+        if (verb.length > 3) { // prevent too short verbs
+          return verb.slice(0, -1);
+        }
+      }
+    }
+    return null; // no suggestion needed
+  }
+
+  // Basic past tense check (simple heuristic)
+  // For verbs that incorrectly use base form instead of past tense
+  // Example: "He walk yesterday" → "He walked yesterday"
+  // We'll check verbs following past time words like "yesterday", "last"
+  // This is very simplistic
+  const commonRegularVerbs = ['walk', 'talk', 'play', 'work', 'jump', 'look', 'call', 'live', 'love'];
+  function checkPastTense(sentenceTokens) {
+    // Check for 'yesterday' or 'last' + noun + base verb pattern
+    // Return list of issues with suggested corrections
+    const issues = [];
+    for (let i = 0; i < sentenceTokens.length; i++) {
+      const word = sentenceTokens[i].toLowerCase();
+      if (word === 'yesterday' || word === 'last') {
+        // Look ahead 1 or 2 tokens for base verb (naive)
+        if (i + 2 < sentenceTokens.length) {
+          const possibleVerb = sentenceTokens[i + 2].toLowerCase();
+          // If it's a common regular verb and no -ed ending, suggest adding -ed
+          if (commonRegularVerbs.includes(possibleVerb)) {
+            issues.push({
+              type: 'Past tense',
+              word: possibleVerb,
+              index: i + 2,
+              suggestion: `Consider using past tense "${possibleVerb}ed" instead of "${possibleVerb}".`
+            });
+          }
+        }
+      }
+    }
+    return issues;
+  }
 
   // Helper log function for dev panel
   function log(message) {
@@ -399,9 +306,12 @@
     return issues;
   }
 
-  // Check for verb agreement mistakes
+  // Check for verb agreement mistakes (extended)
   function findVerbAgreementMistakes(text) {
     const issues = [];
+    const tokens = tokenize(text);
+
+    // Existing phrase replacements
     for (const [wrongPhrase, correctPhrase] of Object.entries(verbAgreementMistakes)) {
       const regex = new RegExp(`\\b${wrongPhrase}\\b`, 'gi');
       let match;
@@ -414,133 +324,149 @@
         });
       }
     }
-    return issues;
-  }
 
-  // Check for simple tense issues (basic example)
-  // This could be greatly improved with NLP libraries or APIs but keeping simple here
-  // We'll detect "was" with plural subject and "were" with singular subject - very naive
-  // For brevity, this example will skip advanced tense checks.
-
-  // Aggregate all checks
-  function checkGrammar(text) {
-    clearLogs();
-    log('Starting grammar check...');
-    const tokens = tokenize(text);
-    debug(`Tokenized words: ${tokens.length}`);
-
-    const repeatedWords = findRepeatedWords(tokens);
-    log(`Found repeated words: ${repeatedWords.length}`);
-
-    const commonMistakesFound = findCommonMistakes(tokens);
-    log(`Found common mistakes: ${commonMistakesFound.length}`);
-
-    const verbErrors = findVerbAgreementMistakes(text);
-    log(`Found verb agreement issues: ${verbErrors.length}`);
-
-    const allIssues = [...repeatedWords, ...commonMistakesFound, ...verbErrors];
-
-    if (allIssues.length === 0) {
-      return [{ message: 'No issues detected. Your text looks good! 😊', type: 'success' }];
-    }
-
-    // Sort issues by index for presentation
-    allIssues.sort((a,b) => a.index - b.index);
-
-    return allIssues;
-  }
-
-  // Render suggestions list
-  function renderSuggestions(issues) {
-    if (issues.length === 1 && issues[0].type === 'success') {
-      suggestionsEl.innerHTML = `<div class="issue">${issues[0].message}</div>`;
-      return;
-    }
-    let html = '';
-    issues.forEach((issue, i) => {
-      if(issue.type === 'success') return;
-      let title = `<strong class="highlight">${issue.type}</strong>`;
-      if(issue.word) {
-        title += `: <em>${issue.word}</em>`;
-      } else if(issue.phrase) {
-        title += `: <em>${issue.phrase}</em>`;
+    // New: check pronoun + verb pairs for 'to be' and 'to have'
+    for (let i = 0; i < tokens.length - 1; i++) {
+      const w1 = tokens[i];
+      const w2 = tokens[i + 1];
+      // Check only alphabetic tokens for subject and verb
+      if (!/^[a-zA-Z']+$/.test(w1) || !/^[a-zA-Z']+$/.test(w2)) continue;
+      const agreement = checkPronounVerbAgreement(w1, w2);
+      if (agreement && !agreement.isCorrect) {
+        issues.push({
+          type: 'Verb agreement',
+          phrase: w1 + ' ' + w2,
+          index: i,
+          suggestion: `Use "${w1} ${agreement.correctForm}" instead of "${w1} ${w2}".`
+        });
       }
-      html += `<div class="issue" tabindex="0" aria-label="${issue.type} issue">${title}<br>Suggestion: ${issue.suggestion}</div>`;
-    });
-    suggestionsEl.innerHTML = html;
-  }
 
-  // Auto correct text based on commonMistakes dictionary
-  function autoCorrectText(text) {
-    clearLogs();
-    log('Starting auto-correct...');
-    let correctedText = text;
-
-    // Replace common mistakes - simple word boundaries to avoid partial matches
-    for (const [wrong, right] of Object.entries(commonMistakes)) {
-      const regex = new RegExp(`\\b${wrong}\\b`, 'gi');
-      if(regex.test(correctedText)) {
-        log(`Auto-correcting "${wrong}" to "${right}"`);
-        correctedText = correctedText.replace(regex, (match) => {
-          // Preserve case for first letter
-          if (match[0] === match[0].toUpperCase()) {
-            return right.charAt(0).toUpperCase() + right.slice(1);
-          }
-          return right;
+      // Check simple present tense verb agreement (he walk → he walks)
+      const simpleVerbCorrection = checkSimpleVerbAgreement(w1, w2);
+      if (simpleVerbCorrection) {
+        issues.push({
+          type: 'Verb agreement',
+          phrase: w1 + ' ' + w2,
+          index: i,
+          suggestion: `Use "${w1} ${simpleVerbCorrection}" instead of "${w1} ${w2}".`
         });
       }
     }
 
-    // Remove repeated words
-    const tokens = tokenize(correctedText);
-    let filteredTokens = [];
-    for (let i = 0; i < tokens.length; i++) {
-      if (i > 0 && tokens[i].toLowerCase() === tokens[i-1].toLowerCase() && /^[a-z']+$/.test(tokens[i].toLowerCase())) {
-        log(`Removing repeated word "${tokens[i]}"`);
-        continue;
-      }
-      filteredTokens.push(tokens[i]);
-    }
-    correctedText = filteredTokens.join(' ');
-
-    // Fix simple verb agreement mistakes
-    for (const [wrongPhrase, correctPhrase] of Object.entries(verbAgreementMistakes)) {
-      const regex = new RegExp(`\\b${wrongPhrase}\\b`, 'gi');
-      if(regex.test(correctedText)) {
-        log(`Fixing verb agreement: "${wrongPhrase}" to "${correctPhrase}"`);
-        correctedText = correctedText.replace(regex, correctPhrase);
-      }
-    }
-
-    return correctedText;
+    return issues;
   }
 
-  // Button handlers
-  checkBtn.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    if(!text) {
-      suggestionsEl.innerHTML = '<div class="issue error">Please enter some text to check.</div>';
+  // Aggregate all grammar issues
+  function findGrammarIssues(text) {
+    clearLogs();
+    const tokens = tokenize(text);
+    const issues = [
+      ...findRepeatedWords(tokens),
+      ...findCommonMistakes(tokens),
+      ...findVerbAgreementMistakes(text),
+      ...checkPastTense(tokens)
+    ];
+    log(`Found ${issues.length} issues.`);
+    return issues;
+  }
+
+  // Display issues nicely
+  function displayIssues(issues) {
+    if (issues.length === 0) {
+      suggestionsEl.innerHTML = '<p>No issues found. Your text looks good!</p>';
       return;
     }
-    const issues = checkGrammar(text);
-    renderSuggestions(issues);
+    const html = issues.map(issue => {
+      if(issue.word) {
+        return `<div class="issue"><strong class="highlight">${issue.word}</strong> - <em>${issue.type}</em><br />Suggestion: ${issue.suggestion}</div>`;
+      }
+      if(issue.phrase) {
+        return `<div class="issue"><strong class="highlight">${issue.phrase}</strong> - <em>${issue.type}</em><br />Suggestion: ${issue.suggestion}</div>`;
+      }
+      return `<div class="issue"><em>${issue.type}</em><br />Suggestion: ${issue.suggestion}</div>`;
+    }).join('');
+    suggestionsEl.innerHTML = html;
+  }
+
+  // Auto-correct text based on our issues (simple approach)
+  // We'll fix commonMistakes, repeated words, and verb agreement of 'to be' and 'to have' and simple s-ending verbs
+  function autoCorrectText(text) {
+    let tokens = tokenize(text);
+    let changed = false;
+
+    // Fix common mistakes
+    tokens = tokens.map(token => {
+      const lower = token.toLowerCase();
+      if (commonMistakes.hasOwnProperty(lower)) {
+        changed = true;
+        // Keep original capitalization
+        if (token[0] === token[0].toUpperCase()) {
+          // Capitalize suggestion
+          return commonMistakes[lower].charAt(0).toUpperCase() + commonMistakes[lower].slice(1);
+        }
+        return commonMistakes[lower];
+      }
+      return token;
+    });
+
+    // Remove repeated words
+    for (let i = 1; i < tokens.length; i++) {
+      if (tokens[i].toLowerCase() === tokens[i - 1].toLowerCase() && /^[a-z']+$/.test(tokens[i].toLowerCase())) {
+        tokens.splice(i, 1);
+        changed = true;
+        i--;
+      }
+    }
+
+    // Fix verb agreement for pronouns + to be/have
+    for (let i = 0; i < tokens.length - 1; i++) {
+      const w1 = tokens[i];
+      const w2 = tokens[i + 1];
+      if (!/^[a-zA-Z']+$/.test(w1) || !/^[a-zA-Z']+$/.test(w2)) continue;
+      const agreement = checkPronounVerbAgreement(w1, w2);
+      if (agreement && !agreement.isCorrect) {
+        tokens[i + 1] = agreement.correctForm;
+        changed = true;
+      } else {
+        // Check simple present verb agreement
+        const verbCorrection = checkSimpleVerbAgreement(w1, w2);
+        if (verbCorrection) {
+          tokens[i + 1] = verbCorrection;
+          changed = true;
+        }
+      }
+    }
+
+    // Join tokens back to string (attempt to keep spacing correct)
+    // We'll add space except before punctuation characters
+    const punctuation = new Set(['.', ',', '!', '?', ';', ':', '"', "'", ')', '(', '-']);
+    let result = '';
+    for (let i = 0; i < tokens.length; i++) {
+      if (i > 0 && !punctuation.has(tokens[i]) && !punctuation.has(tokens[i - 1])) {
+        result += ' ';
+      }
+      result += tokens[i];
+    }
+
+    if (!changed) return null;
+    return result;
+  }
+
+  checkBtn.addEventListener('click', () => {
+    const text = textInput.value;
+    const issues = findGrammarIssues(text);
+    displayIssues(issues);
   });
 
   autoBtn.addEventListener('click', () => {
-    const text = textInput.value.trim();
-    if(!text) {
-      suggestionsEl.innerHTML = '<div class="issue error">Please enter some text to auto-correct.</div>';
-      return;
-    }
+    const text = textInput.value;
     const corrected = autoCorrectText(text);
-    textInput.value = corrected;
-    const issues = checkGrammar(corrected);
-    renderSuggestions(issues);
-  });
-
-  // Accessibility: Focus textarea on load
-  window.addEventListener('load', () => {
-    textInput.focus();
+    if (corrected === null) {
+      suggestionsEl.innerHTML = '<p>No automatic corrections suggested.</p>';
+    } else {
+      suggestionsEl.innerHTML = '<p><strong>Auto-corrected text:</strong></p><textarea style="width:100%;height:150px;">' + corrected + '</textarea>';
+      textInput.value = corrected;
+    }
   });
 </script>
 </body>
