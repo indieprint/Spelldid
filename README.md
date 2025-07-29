@@ -3,145 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Grammar Checker with Auto-Correct</title>
+  <title>Grammar Checker</title>
+  <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --primary: #00b4d8;
-      --secondary: #90e0ef;
-      --text-color: #f8f9fa;
-      --glass-bg: rgba(255, 255, 255, 0.1);
-      --glass-border: rgba(255, 255, 255, 0.2);
-      --highlight: #ffe564;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body, html {
-      height: 100%;
-      font-family: 'Inter', sans-serif;
-      background: linear-gradient(135deg, #03045e, #023e8a, #0077b6, #0096c7, #00b4d8);
-      background-size: 400% 400%;
-      animation: gradientFlow 20s ease infinite;
-      color: var(--text-color);
-    }
-
-    @keyframes gradientFlow {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    .container {
-      max-width: 850px;
-      margin: 50px auto;
-      padding: 40px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      backdrop-filter: blur(12px);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-    }
-
-    h1 {
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 2.5rem;
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    textarea {
-      width: 100%;
-      height: 180px;
-      padding: 15px;
-      font-size: 16px;
-      border-radius: 15px;
-      border: none;
-      outline: none;
-      resize: vertical;
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      backdrop-filter: blur(6px);
-      box-shadow: inset 0 0 6px rgba(255, 255, 255, 0.2);
-      margin-bottom: 20px;
-    }
-
-    .buttons {
-      display: flex;
-      gap: 15px;
-      margin-bottom: 30px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
-
-    button {
-      padding: 12px 28px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 10px;
-      border: none;
-      cursor: pointer;
-      background: #ffffff10;
-      color: #fff;
-      box-shadow: 4px 4px 12px rgba(0,0,0,0.2),
-                  -4px -4px 12px rgba(255,255,255,0.1);
-      transition: all 0.3s ease;
-    }
-
-    button:hover {
-      background: #ffffff20;
-      transform: scale(1.03);
-    }
-
-    button:active {
-      transform: scale(0.97);
-    }
-
-    .suggestions {
-      background: #ffffff10;
-      padding: 20px;
-      border-radius: 12px;
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--glass-border);
-      color: #fff;
-    }
-
-    .issue {
-      margin-bottom: 15px;
-      padding: 15px;
-      background: #ffffff15;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .highlight {
-      background-color: var(--highlight);
-      color: #000;
-      padding: 2px 4px;
-      border-radius: 4px;
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 1.8rem;
-      }
-
-      button {
-        width: 100%;
-      }
-
-      .buttons {
-        flex-direction: column;
-      }
-    }
-  </style>
 </head>
 <body>
+
+  <div class="background"></div>
 
   <div class="container">
     <h1>✨ Grammar Checker with Auto-Correct</h1>
@@ -160,7 +28,7 @@
       const inputArea = document.getElementById("textInput");
       const text = inputArea.value;
       const outputDiv = document.getElementById("output");
-      outputDiv.innerHTML = "🧠 Checking grammar...";
+      outputDiv.innerHTML = "<div class='typing'>🧠 Checking grammar...</div>";
 
       const response = await fetch("https://api.languagetool.org/v2/check", {
         method: "POST",
